@@ -43,7 +43,7 @@ public class DemandService {
 			        	}
 			        	
 			        	beverageNapkin = beverageNapkin + amount;
-			        	forks = forks + 0;
+			        	forks = forks + amount;
 			        }
 		
 			        if(appetizers){
