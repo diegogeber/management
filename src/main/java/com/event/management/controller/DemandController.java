@@ -13,19 +13,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.event.management.enumerator.TypeDemandEnum;
 import com.event.management.service.DemandService;
 
 @RestController
 public class DemandController {
 	
 	@Autowired
-	DemandService demandService;
+	DemandService svc;
 	
 	
     @GetMapping("/demand/campus-catering-full-service")
@@ -35,13 +32,18 @@ public class DemandController {
     		@RequestParam(name = "mainDishes") boolean mainDishes,
     		@RequestParam(name = "deserts") boolean deserts,
     		@RequestParam(name = "eightInchPlates") boolean eightInchPlates,
+    		@RequestParam(name = "sixInchPlates") boolean sixInchPlates,
     		@RequestParam(name = "appetizers") boolean appetizers,
     		@RequestParam(name = "coldBeverage") boolean coldBeverage,
     		@RequestParam(name = "hotBeverage") boolean hotBeverage
     		
     		) throws IOException {
-        String fileName = demandService.avaliateDemand(TypeDemandEnum.CCFS, amount, buffet, mainDishes, deserts, appetizers, coldBeverage, hotBeverage, false, eightInchPlates);
-        File file = new File(fileName);
+        String fileName = svc.ccfullservice(amount, buffet, mainDishes, deserts, appetizers, coldBeverage, hotBeverage, false, eightInchPlates, sixInchPlates);
+        return convertFile(fileName);
+    }
+
+	private ResponseEntity<byte[]> convertFile(String fileName) throws FileNotFoundException, IOException {
+		File file = new File(fileName);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.TEXT_PLAIN);
         headers.setContentDispositionFormData("filename", fileName);
@@ -60,5 +62,37 @@ public class DemandController {
         }
         file.delete();
         return new ResponseEntity<>(outputStream.toByteArray() , headers, HttpStatus.OK);
+	}
+    
+    @GetMapping("/demand/campus-catering-express")
+    public String createDemandCCE(
+    		@RequestParam(name = "amount") int amount,
+    		@RequestParam(name = "sandwich") boolean sandwich,
+    		@RequestParam(name = "burrito") boolean burrito,
+    		@RequestParam(name = "bowls") boolean bowls,
+    		@RequestParam(name = "coldBeverage") boolean coldBeverage,
+    		@RequestParam(name = "hotBeverage") boolean hotBeverage,
+    		@RequestParam(name = "soda") boolean soda
+    		
+    		
+    		) throws IOException {
+        
+        return "Em construção";
     }
+    
+    @GetMapping("/demand/kw-full-service")
+    public ResponseEntity<byte[]> createDemandKWFS(
+    		@RequestParam(name = "amount") int amount,
+    		@RequestParam(name = "deserts") boolean deserts,
+    		@RequestParam(name = "appetizers") boolean appetizers,
+    		@RequestParam(name = "am-pm-break") boolean ampm,
+    		@RequestParam(name = "coldBeverage") boolean coldBeverage,
+    		@RequestParam(name = "hotBeverage") boolean hotBeverage
+    		) throws IOException {
+        
+    	String fileName = svc.kwFullService(amount, deserts,appetizers,ampm,coldBeverage,hotBeverage);
+    	return convertFile(fileName);
+    }
+    
+    
 }
