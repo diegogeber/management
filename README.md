@@ -1,6 +1,6 @@
 # Disposable Items Management API
 
-![Java](https://img.shields.io/badge/Java-11-orange?style=for-the-badge&logo=java)
+![Java](https://img.shields.io/badge/Java-17-orange?style=for-the-badge&logo=java&link=https://jdk.java.net/17/)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-2.5.4-brightgreen?style=for-the-badge&logo=spring)
 ![Docker](https://img.shields.io/badge/Docker-20.10.8-blue?style=for-the-badge&logo=docker)
 
